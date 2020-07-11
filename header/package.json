@@ -1,0 +1,17 @@
+{
+  "name": "github-profile-header",
+  "version": "0.0.0",
+  "description": "Generates the image for my GitHub profile header",
+  "main": "render.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/controversial/controversial.git"
+  },
+  "author": "Luke Deen Taylor",
+  "license": "MIT",
+  "homepage": "https://github.com/controversial",
+  "dependencies": {
+    "gl": "^4.5.2",
+    "sharp": "^0.25.4"
+  }
+}

@@ -1,0 +1,21 @@
+header/frames/*
+!header/frames/.gitkeep
+
+# Node
+logs
+*.log
+npm-debug.log*
+pids
+*.pid
+*.seed
+*.pid.lock
+.lock-wscript
+build/Release
+node_modules/
+.npm
+.eslintcache
+.node_repl_history
+
+# Core
+.env
+.DS_Store
