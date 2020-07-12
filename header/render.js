@@ -6,7 +6,11 @@ const path = require('path');
 
 const canvasWidth = 1440;
 const canvasHeight = 420;
+const fps = 50; // 50fps because GIF takes frame delay in hundredths of seconds
+const anim_length = 2; // in seconds
+const anim_frames = anim_length * fps; // number of frames
 
+// Set up webgl context
 const gl = headlessGl(canvasWidth, canvasHeight);
 
 // Set the “clear” color
@@ -52,13 +56,23 @@ gl.vertexAttribPointer(positionAttributeLocation, 2, gl.FLOAT, false, 0, 0);
 // Set up u_resolution uniform for fragment shader
 const resolutionUniformLocation = gl.getUniformLocation(program, 'u_resolution');
 gl.uniform2f(resolutionUniformLocation, gl.drawingBufferWidth, gl.drawingBufferHeight);
+// Set up u_time uniform (will change with each render)
+const timeUniformLocation = gl.getUniformLocation(program, 'u_time');
+gl.uniform1f(timeUniformLocation, 0);
 
-function draw() {
+/**
+ * Draw a frame on the canvas
+ */
+function draw(frameNumber) {
+  gl.uniform1f(timeUniformLocation, frameNumber / fps);
   gl.clear(gl.COLOR_BUFFER_BIT);
   gl.drawArrays(gl.TRIANGLES, 0, 6);
 }
 
-function capture(filename) {
+/**
+ * Save a frame from the canvas to an image file
+ */
+function captureTo(filename) {
   // 4 8-bit channels (rgba) for each pixel of the canvas
   const pixels = new Uint8Array(canvasWidth * canvasHeight * 4);
   // Read pixel data into array
@@ -83,5 +97,7 @@ function capture(filename) {
     .toFile(filename);
 }
 
-draw();
-capture('frames/out.jpg');
+for (let i = 0; i < anim_frames; i++) {
+  draw(i);
+  captureTo(`frames/${i}.jpg`)
+}
